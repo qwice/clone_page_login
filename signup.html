@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        input {
+            width: 250px;
+            height: 40px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding-left: 10px;
+            /* margin-bottom: 10px; */
+        }
+        .password-wrapper {
+            position: relative;
+            width: 250px;
+        }
+        .password-wrapper i {
+            position: absolute;
+            top: 30%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        #idConfirm {
+            display: block;
+            width: 250px;
+            text-align: right;
+            font-size: 12px;
+            color: gray;
+        }
+        #pwPatternConfirm {
+            display: block;
+            width: 250px;
+            text-align: right;
+            font-size: 12px;
+            color: gray;
+        }
+        #pwConfirm {
+            display: block;
+            width: 250px;
+            text-align: right;
+            font-size: 12px;
+            color: gray;
+        }
+        h3 {
+            margin-top: 10px;
+            width: 250px;
+            text-align: left;
+        }
+        .signup_div {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .signup_div .signup_button {
+            display: block;
+            width: 150px;
+            height: 30px;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form action="#" id="signup">
+        <h3>아이디</h3>
+        <input type="text" id="id" name="id" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" oninput="validateEmail()" placeholder="사용하실 아이디를 입력해 주세요." required>
+        <span id="idConfirm">이메일을 입력해 주세요.</span>
+        <h3>비밀번호</h3>
+        <div class="password-wrapper">
+            <input type="password" id="pwd" oninput="validatePassword()" placeholder="사용하실 비밀번호를 입력해 주세요." required>
+            <i class="fas fa-eye" id="togglePwd" onclick="togglePassword()"></i>
+            <span id="pwPatternConfirm">8~16자의 영문 대소문자, 숫자, 특수문자(~!@#) 사용</span>
+        </div>
+        <h3>비밀번호 확인</h3>
+        <div class="password-wrapper">
+            <input type="password" id="pwdCheck" oninput="pwCheck()" placeholder="비밀번호를 한번 더 입력해 주세요." required>
+            <i class="fas fa-eye" id="togglePwdCheck" onclick="togglePasswordCheck()"></i>
+            <span id="pwConfirm">비밀번호를 입력하세요</span>
+        </div>
+        <h3>이름</h3>
+        <input type="text" id="name" name="name" required>
+        <div class="signup_div">
+            <button class="signup_button">회원가입하기</button>
+        </div>
+    </form>
+
+    <script>
+        function validateEmail() {
+            const emailInput = document.getElementById('id');
+            const feedback = document.getElementById('idConfirm');
+            const email = emailInput.value;
+            const pattern = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/;
+
+            if (email === '') {
+                feedback.textContent = '이메일을 입력해 주세요.';
+                feedback.style.color = 'gray';
+            } else if (!pattern.test(email)) {
+                feedback.textContent = '이메일 형식이 아닙니다.';
+                feedback.style.color = 'red';
+            } else {
+                feedback.textContent = '올바른 이메일 형식입니다.';
+                feedback.style.color = 'green';
+            }
+        }
+
+        function validatePassword() {
+            const pwInput = document.getElementById('pwd');
+            const feedback = document.getElementById('pwPatternConfirm');
+            const pw = pwInput.value;
+
+            const lengthCheck = pw.length >= 8 && pw.length <= 16;
+            const upperCaseCheck = /[A-Z]/.test(pw);
+            const lowerCaseCheck = /[a-z]/.test(pw);
+            const numberCheck = /[0-9]/.test(pw);
+            const specialCharCheck = /[~!@#]/.test(pw);
+
+            if (pw === '') {
+                feedback.textContent = '8~16자의 영문 대소문자, 숫자, 특수문자(~!@#) 사용';
+                feedback.style.color = 'gray';
+            } else if (!lengthCheck || !upperCaseCheck || !lowerCaseCheck || !numberCheck || !specialCharCheck) {
+                feedback.textContent = '비밀번호 형식이 올바르지 않습니다.';
+                feedback.style.color = 'red';
+            } else {
+                feedback.textContent = '사용 가능한 비밀번호입니다.';
+                feedback.style.color = 'green';
+            }
+        }
+
+        function togglePassword() {
+            const pwInput = document.getElementById('pwd');
+            const icon = document.getElementById('togglePwd');
+
+            if (pwInput.type === 'password') {
+                pwInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                pwInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function togglePasswordCheck() {
+            const pwInput = document.getElementById('pwdCheck');
+            const icon = document.getElementById('togglePwdCheck');
+
+            if (pwInput.type === 'password') {
+                pwInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                pwInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function pwCheck() {
+            const pwd = document.getElementById('pwd').value;
+            const pwdCheck = document.getElementById('pwdCheck').value;
+            const confirmText = document.getElementById('pwConfirm');
+
+            if (pwd === '') {
+                confirmText.textContent = '비밀번호를 입력하세요.';
+                confirmText.style.color = 'gray';
+            }
+            else if (pwd !== '' && pwd === pwdCheck) {
+                confirmText.textContent = '비밀번호가 일치합니다.';
+                confirmText.style.color = 'green';
+            } else {
+                confirmText.textContent = '비밀번호가 일치하지 않습니다.';
+                confirmText.style.color = 'red';
+            }
+        }
+
+        document.getElementById('signup').addEventListener('submit', function(e) {
+            e.preventDefault(); // 기본 이동 막기
+
+            const id = document.getElementById('id').value;
+            const password = document.getElementById('pwd').value;
+            const name = document.getElementById('name').value;
+            const passwordCheck = document.getElementById('pwdCheck').value;
+
+            // 이메일 및 비밀번호 패턴 확인
+            const emailPattern = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/;
+            const lengthCheck = password.length >= 8 && password.length <= 16;
+            const upperCaseCheck = /[A-Z]/.test(password);
+            const lowerCaseCheck = /[a-z]/.test(password);
+            const numberCheck = /[0-9]/.test(password);
+            const specialCharCheck = /[~!@#]/.test(password);
+            const passwordValid = lengthCheck && upperCaseCheck && lowerCaseCheck && numberCheck && specialCharCheck;
+
+            if (!emailPattern.test(id)) {
+                alert('이메일 형식이 올바르지 않습니다.');
+                return;
+            }
+
+            if (!passwordValid) {
+                alert('비밀번호 형식이 올바르지 않습니다.');
+                return;
+            }
+
+            if (password !== passwordCheck) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+
+            const user = {
+                id: `${id}`,
+                pwd: `${password}`,
+                name: `${name}`,
+            }
+
+            // 통과했을 경우만 localStorage 저장 및 이동
+            localStorage.setItem('user', JSON.stringify(user));
+
+            alert('회원가입 성공');
+            window.location.href = './index.html';
+        });
+    </script>
+</body>
+</html>
